@@ -124,7 +124,7 @@ export default function Home() {
         </Canvas>
         <div className={styles.card} style={{ display: showCard ? 'block' : 'none' }}>
           <h1 className={styles.title}>Une petite maison</h1>
-          <p className={styles.desc}>"Une petite masion" which was designated a World Heritage in 2016, was designed and built by Le Corbusier as Geneva lakeside home for his parents in 1925.</p>
+          <p className={styles.desc}>Une petite masion which was designated a World Heritage in 2016, was designed and built by Le Corbusier as Geneva lakeside home for his parents in 1925.</p>
           <button className={styles.btn} onClick={handleButtonClick}>Go to Protfilio</button>
         </div>
       </main>
