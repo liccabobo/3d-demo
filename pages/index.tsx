@@ -4,7 +4,7 @@ import React, { Suspense, useEffect, useState } from 'react'
 import { Canvas, useLoader, useThree, useFrame } from '@react-three/fiber'
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader'
 import { DRACOLoader } from 'three/examples/jsm/loaders/DRACOLoader.js'
-import { OrbitControls } from "three/examples/jsm/controls/OrbitControls"
+import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls'
 
 const dracoLoader = new DRACOLoader()
 dracoLoader.setDecoderPath('/gltf/')
@@ -51,7 +51,7 @@ function Island() {
   )
 }
 
-function Cyclist() {
+function Cyclist({ setShowCard }: { setShowCard: React.Dispatch<React.SetStateAction<boolean>> }) {
   const { camera } = useThree()
   const cyclist = useLoader(GLTFLoader, '/cyclist.glb', (loader) => {
     loader.setDRACOLoader(dracoLoader)
@@ -75,12 +75,17 @@ function Cyclist() {
     }
   }, [])
 
-  useFrame((state, delta) => {
-    if(isUpdating) {
+  useFrame(() => {
+    if (isUpdating) {
       const newX = camera.position.x / 1.3
       const newZ = camera.position.z / 1.3
       const positionArray = [newX, 0, newZ]
       setPosition(positionArray)
+      if (newZ <= -3 && newZ >-3.8) {
+        setShowCard(true)
+      } else {
+        setShowCard(false)
+      }
     }
   })
 
@@ -95,7 +100,13 @@ function Cyclist() {
   )
 }
 
+function handleButtonClick() {
+  window.open('https://www.copyrightbookshop.be/en/shop/le-corbusier-une-petite-maison/')
+}
+
 export default function Home() {
+  const [showCard, setShowCard] = useState(false)
+
   return (
     <>
       <Head>
@@ -109,8 +120,13 @@ export default function Home() {
           <ambientLight />
           <CameraController />
           <Island />
-          <Cyclist />
+          <Cyclist setShowCard={setShowCard}/>
         </Canvas>
+        <div className={styles.card} style={{ display: showCard ? 'block' : 'none' }}>
+          <h1 className={styles.title}>Une petite maison</h1>
+          <p className={styles.desc}>"Une petite masion" which was designated a World Heritage in 2016, was designed and built by Le Corbusier as Geneva lakeside home for his parents in 1925.</p>
+          <button className={styles.btn} onClick={handleButtonClick}>Go to Protfilio</button>
+        </div>
       </main>
     </>
   )
